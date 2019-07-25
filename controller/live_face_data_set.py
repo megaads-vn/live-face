@@ -4,10 +4,14 @@ import cv2
 import os
 
 parser = reqparse.RequestParser()
+dir = '././dataset/'
+if os.path.isdir(dir) == False:
+    os.mkdir(dir)
 
 RESPONSE = {
     'status': 'successful'
 }
+
 class LiveFaceDataSet(Resource):
     def get(self):
         return RESPONSE
@@ -16,13 +20,14 @@ class LiveFaceDataSet(Resource):
         parser.add_argument('id')
         args = parser.parse_args()
         face_id = args['id']
-        path = '././dataset/' + face_id
+        path =  dir + face_id
         if os.path.isdir(path):
             list_images = os.listdir(path)
             for image in list_images:
                 os.remove(path + '/' + image);
         else:
             os.mkdir(path)
+
         cam = cv2.VideoCapture(0)
         cam.set(3, 1280) # set video width
         cam.set(4, 720) # set video height

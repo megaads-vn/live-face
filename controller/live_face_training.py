@@ -13,9 +13,12 @@ config.read('./cfgs.ini')
 urlResource = config['DEFAULT']['urlResource']
 
 parser = reqparse.RequestParser()
-path = '././dataset'
+
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 detector = cv2.CascadeClassifier("././cascades/haarcascade_frontalface_default.xml");
+dir = '././trainer'
+if os.path.isdir(dir) == False:
+    os.mkdir(dir)
 
 RESPONSE = {
     'status': 'successful'
@@ -49,7 +52,7 @@ class LiveFaceTraining(Resource):
         faceSamples=[]
         ids = []
         for id in arrIds:
-            pathUser = path + '/' + id
+            pathUser = '././dataset' + '/' + id
             if os.path.isdir(pathUser):
                 imagePaths = [os.path.join(pathUser,f) for f in os.listdir(pathUser)]
                 for imagePath in imagePaths:
