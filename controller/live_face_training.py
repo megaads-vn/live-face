@@ -36,10 +36,10 @@ class LiveFaceTraining(Resource):
 
         return retVal
 
-    def get(self):
+    def post(self):
         return RESPONSE
 
-    def post(self):
+    def get(self):
         arrIds = self.getFaceIds()
         faces,ids = self.getImagesAndLabels(arrIds)
         recognizer.train(faces, np.array(ids))
