@@ -1,4 +1,9 @@
 # live-face
+Required:
+```
+Python 3, openCV, Flask restful, pillow
+```
+
 run:
 ```
 python __init__.py
