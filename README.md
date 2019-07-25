@@ -3,6 +3,12 @@ run:
 ```
 python __init__.py
 ```
+Data example:
+```
+GET:
+http://127.0.0.1:5000/data-users
+```
+
 
 Data Gathering:
 
@@ -33,10 +39,4 @@ Turn off Camera:
 ```
 POST:
 http://127.0.0.1:5000/live-face-off-camera
-```
-
-Data example:
-```
-GET:
-http://127.0.0.1:5000/data-users
 ```
