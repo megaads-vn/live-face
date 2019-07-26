@@ -10,7 +10,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('./cfgs.ini')
-urlResource = config['DEFAULT']['urlResource']
+urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
 
 parser = reqparse.RequestParser()
 
@@ -32,8 +32,7 @@ class LiveFaceTraining(Resource):
         retVal = [];
         if output['status'] == 'successful':
             for item in output['items']:
-                retVal.append(str(item['id']))
-
+                retVal.append(item['id'])
         return retVal
 
     def post(self):
@@ -52,7 +51,7 @@ class LiveFaceTraining(Resource):
         faceSamples=[]
         ids = []
         for id in arrIds:
-            pathUser = '././dataset' + '/' + id
+            pathUser = '././dataset' + '/' + str(id)
             if os.path.isdir(pathUser):
                 imagePaths = [os.path.join(pathUser,f) for f in os.listdir(pathUser)]
                 for imagePath in imagePaths:

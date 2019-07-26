@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_restful import reqparse, abort, Api, Resource
-import cv2
+import os
 
 RESPONSE = {
     'status': 'successful'
@@ -9,8 +9,9 @@ RESPONSE = {
 class LiveFaceOffCamera(Resource):
 
     def post(self):
-        cam = cv2.VideoCapture(0)
-        if cam.isOpened() == True:
-            file = open('camera.lock', 'w+')
+        if os.path.exists('camera.lock'):
+            os.remove('camera.lock')
+
+        file = open('camera.lock', 'w+')
 
         return RESPONSE

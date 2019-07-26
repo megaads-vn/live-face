@@ -28,9 +28,12 @@ class LiveFaceDataSet(Resource):
         else:
             os.mkdir(path)
 
+        if os.path.exists('camera.lock'):
+            os.remove('camera.lock')
+
         cam = cv2.VideoCapture(0)
-        cam.set(3, 1280) # set video width
-        cam.set(4, 720) # set video height
+        cam.set(3, 640) # set video width
+        cam.set(4, 480) # set video height
         face_detector = cv2.CascadeClassifier('././cascades/haarcascade_frontalface_default.xml')
         # For each person, enter one numeric face id
         print("\n [INFO] Initializing face capture. Look the camera and wait ...")
@@ -52,7 +55,7 @@ class LiveFaceDataSet(Resource):
             if count >= 50: # Take 50 face sample and stop video
                 break
             elif os.path.exists('camera.lock'):
-                os.remove('camera.lock');
+                os.remove('camera.lock')
                 break
 
         cam.release()
