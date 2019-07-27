@@ -29,8 +29,9 @@ class LiveFaceRecognition(Resource):
         return retVal
 
     def post(self):
-        recognizer = cv2.face.LBPHFaceRecognizer_create()
-        recognizer.read('././trainer/trainer.yml')
+        #recognizer = cv2.face.LBPHFaceRecognizer_create() #working on Mac or Pc
+        recognizer = cv2.face.createLBPHFaceRecognizer() #working on Pi
+        recognizer.load('././trainer/trainer.yml') # recognizer.read() working on Mac or Pc
         cascadePath = "././cascades/haarcascade_frontalface_default.xml";
         faceCascade = cv2.CascadeClassifier(cascadePath);
         font = cv2.FONT_HERSHEY_SIMPLEX

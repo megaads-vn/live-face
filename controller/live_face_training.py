@@ -14,7 +14,8 @@ urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' +
 
 parser = reqparse.RequestParser()
 
-recognizer = cv2.face.LBPHFaceRecognizer_create()
+#recognizer = cv2.face.LBPHFaceRecognizer_create() working on Pc or Mac
+recognizer = cv2.face.createLBPHFaceRecognizer() #working on pi
 detector = cv2.CascadeClassifier("././cascades/haarcascade_frontalface_default.xml");
 dir = '././trainer'
 if os.path.isdir(dir) == False:
@@ -43,7 +44,7 @@ class LiveFaceTraining(Resource):
         faces,ids = self.getImagesAndLabels(arrIds)
         recognizer.train(faces, np.array(ids))
         # Save the model into trainer/trainer.yml
-        recognizer.write('././trainer/trainer.yml') # recognizer.save() worked on Mac, but not on Pi
+        recognizer.save('././trainer/trainer.yml') # recognizer.write() worked on Pi, but not on Mac or PC
         RESPONSE['message'] = 'Live faces trained'
         return RESPONSE
 
