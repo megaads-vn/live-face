@@ -3,9 +3,15 @@ Required:
 ```
 Python 3, openCV, Flask restful, pillow
 ```
-
-run:
+run on MAC OR PC:
 ```
+python __init__.py
+```
+run on Pi:
+```
+sudo -s
+export DISPLAY=:0
+modprobe bcm2835-v4l2
 python __init__.py
 ```
 Data example:
