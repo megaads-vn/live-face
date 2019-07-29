@@ -10,11 +10,11 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('./cfgs.ini')
-urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
-
+# urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
+urlResource = 'http://127.0.0.1:5000/data-users'
 parser = reqparse.RequestParser()
 
-#recognizer = cv2.face.LBPHFaceRecognizer_create() working on Pc or Mac
+#recognizer = cv2.face.LBPHFaceRecognizer_create() #working on Pc or Mac
 recognizer = cv2.face.createLBPHFaceRecognizer() #working on pi
 detector = cv2.CascadeClassifier("././cascades/haarcascade_frontalface_default.xml");
 dir = '././trainer'
@@ -44,7 +44,7 @@ class LiveFaceTraining(Resource):
         faces,ids = self.getImagesAndLabels(arrIds)
         recognizer.train(faces, np.array(ids))
         # Save the model into trainer/trainer.yml
-        recognizer.save('././trainer/trainer.yml') # recognizer.write() worked on Pi, but not on Mac or PC
+        recognizer.save('././trainer/trainer.yml') # recognizer.write() worked on Mac or PC, but not on Pi
         RESPONSE['message'] = 'Live faces trained'
         return RESPONSE
 

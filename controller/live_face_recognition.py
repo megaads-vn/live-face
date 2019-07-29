@@ -13,7 +13,8 @@ RESPONSE = {
 }
 config = configparser.ConfigParser()
 config.read('./cfgs.ini')
-urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
+#urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
+urlResource = 'http://127.0.0.1:5000/data-users'
 apiTimeKeeping = config['DEFAULT']['urlHrmApi'] + '/api/staff/send-finger-print'
 
 class LiveFaceRecognition(Resource):
@@ -53,34 +54,36 @@ class LiveFaceRecognition(Resource):
         while True:
             ret, img = cam.read()
             gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-            faces = faceCascade.detectMultiScale(gray, scaleFactor = 1.2, minNeighbors = 5, minSize = (int(minW), int(minH)),)
+            faces = faceCascade.detectMultiScale(gray, scaleFactor = 1.2, minNeighbors = 5, minSize = (int(minW), int(minH)))
+            target = 0
             for(x,y,w,h) in faces:
                 cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
                 id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
                 if (confidence < 100):
-                    name = 'unknown'
+                    name = ''
                     if id in users:
                         name = users[id]
                         target = round(100 - confidence)
-                        if target >= 50:
-                            timeKeeping[id].append(target)
-
-                        if len(timeKeeping[id]) >= 50:
-                            # post a timeKeeping
-                            try:
-                                r = requests.post(apiTimeKeeping, data={"staff_id": id})
-                                if r.status_code == 200:
-                                    timeKeeping[id] = []
-                            except:
-                                print("An exception occurred")
+                        # if target >= 50:
+                        #     timeKeeping[id].append(target)
+                        #
+                        # if len(timeKeeping[id]) >= 50:
+                        #     # post a timeKeeping
+                        #     try:
+                        #         r = requests.post(apiTimeKeeping, data={"staff_id": id})
+                        #         if r.status_code == 200:
+                        #             timeKeeping[id] = []
+                        #     except:
+                        #         print("An exception occurred")
 
                     confidence = "  {0}%".format(round(100 - confidence))
                 else:
                     name = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
 
-                cv2.putText(img, str(name), (x+5,y-5), font, 1, (255,255,255), 2)
-                cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)
+                if target >= 50:
+                    cv2.putText(img, str(name), (x+5,y-5), font, 1, (255,255,255), 2)
+                    cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)
 
             cv2.imshow('camera',img)
             cv2.waitKey(10)
