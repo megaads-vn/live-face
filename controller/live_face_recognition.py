@@ -13,8 +13,8 @@ RESPONSE = {
 }
 config = configparser.ConfigParser()
 config.read('./cfgs.ini')
-#urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
-urlResource = 'http://127.0.0.1:5000/data-users'
+urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
+#urlResource = 'http://127.0.0.1:5000/data-users'
 apiTimeKeeping = config['DEFAULT']['urlHrmApi'] + '/api/staff/send-finger-print'
 
 class LiveFaceRecognition(Resource):
@@ -32,7 +32,7 @@ class LiveFaceRecognition(Resource):
     def post(self):
         #recognizer = cv2.face.LBPHFaceRecognizer_create() #working on Mac or Pc
         recognizer = cv2.face.createLBPHFaceRecognizer() #working on Pi
-        recognizer.load('././trainer/trainer.yml') # recognizer.read() working on Mac or Pc
+        recognizer.load('././trainer/trainer.yml') # recognizer.read() working on Mac or Pc, .load() worked on Pi
         cascadePath = "././cascades/haarcascade_frontalface_default.xml";
         faceCascade = cv2.CascadeClassifier(cascadePath);
         font = cv2.FONT_HERSHEY_SIMPLEX

@@ -1,7 +1,7 @@
 # live-face
 Required:
 ```
-Python 3, openCV, Flask restful, pillow
+Python 3, openCV, Flask restful, pillow, flask-cors
 ```
 run on MAC OR PC:
 ```
