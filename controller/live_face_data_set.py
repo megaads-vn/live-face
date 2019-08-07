@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_restful import reqparse, abort, Api, Resource
+from flask import Response
 import cv2
 import os
 
@@ -62,3 +63,11 @@ class LiveFaceDataSet(Resource):
         cv2.destroyAllWindows()
 
         return RESPONSE
+
+    def options(self):
+        resp = Response("")
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS'
+        resp.headers['Access-Control-Allow-Headers'] = '*'
+
+        return resp
