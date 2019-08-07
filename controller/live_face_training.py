@@ -29,7 +29,7 @@ RESPONSE = {
 class LiveFaceTraining(Resource):
 
     def getFaceIds(self):
-        r = requests.get(urlResource)
+        r = requests.get(urlResource, verify=False)
         output = r.json()
         retVal = [];
         if output['status'] == 'successful':
