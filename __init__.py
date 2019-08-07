@@ -9,7 +9,7 @@ from controller.data_user import DataUser
 
 app = Flask(__name__)
 api = Api(app)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 api.add_resource(LiveFaceDataSet, '/live-face-data-set')
 api.add_resource(LiveFaceTraining, '/live-face-training')
