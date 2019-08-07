@@ -21,9 +21,9 @@ apiTimeKeeping = config['DEFAULT']['urlHrmApi'] + '/api/staff/send-finger-print'
 class LiveFaceRecognition(Resource):
 
     def buildDataFace(self):
-        requests.packages.urllib3.disable_warnings()
-        r = requests.get(urlResource)
+        r = requests.get(urlResource, verify=False)
         output = r.json()
+        print("\n Output=" + output)
         retVal = {};
         if output['status'] == 'successful':
             for item in output['items']:
