@@ -18,4 +18,5 @@ api.add_resource(LiveFaceOffCamera, '/live-face-off-camera')
 api.add_resource(DataUser, '/data-users')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(ssl_context='adhoc')
+    #app.run(debug=True)
