@@ -9,7 +9,7 @@ from controller.data_user import DataUser
 
 app = Flask(__name__)
 api = Api(app)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 api.add_resource(LiveFaceDataSet, '/live-face-data-set')
 api.add_resource(LiveFaceTraining, '/live-face-training')
@@ -18,4 +18,5 @@ api.add_resource(LiveFaceOffCamera, '/live-face-off-camera')
 api.add_resource(DataUser, '/data-users')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(ssl_context='adhoc')
+    #app.run(debug=True)
