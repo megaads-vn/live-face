@@ -102,17 +102,17 @@ class LiveFaceRecognition(Resource):
                     if id in users:
                         name = users[id]
                         target = round(100 - confidence)
-                        # if target >= 50:
-                        #     timeKeeping[id].append(target)
-                        #
-                        # if len(timeKeeping[id]) >= 50:
-                        #     # post a timeKeeping
-                        #     try:
-                        #         r = requests.post(apiTimeKeeping, data={"staff_id": id})
-                        #         if r.status_code == 200:
-                        #             timeKeeping[id] = []
-                        #     except:
-                        #         print("An exception occurred")
+                        if target >= 50:
+                            timeKeeping[id].append(target)
+                        
+                        if len(timeKeeping[id]) >= 50:
+                            # post a timeKeeping
+                            try:
+                                r = requests.post(apiTimeKeeping, data={"staff_id": id})
+                                if r.status_code == 200:
+                                    timeKeeping[id] = []
+                            except:
+                                print("An exception occurred")
 
                     confidence = "  {0}%".format(round(100 - confidence))
                 else:
