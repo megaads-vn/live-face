@@ -6,7 +6,11 @@ import os
 import numpy as np
 from PIL import Image
 import sys
+# import requests
+import warnings
+import contextlib
 import requests
+from urllib3.exceptions import InsecureRequestWarning
 import configparser
 
 RESPONSE = {
@@ -17,12 +21,44 @@ config.read('./cfgs.ini')
 urlResource = config['DEFAULT']['urlHrm'] + '/service/staff/data-staff?token=' + config['DEFAULT']['token']
 #urlResource = 'http://127.0.0.1:5000/data-users'
 apiTimeKeeping = config['DEFAULT']['urlHrmApi'] + '/api/staff/send-finger-print'
+old_merge_environment_settings = requests.Session.merge_environment_settings
+
+@contextlib.contextmanager
+def no_ssl_verification():
+    opened_adapters = set()
+
+    def merge_environment_settings(self, url, proxies, stream, verify, cert):
+        # Verification happens only once per connection so we need to close
+        # all the opened adapters once we're done. Otherwise, the effects of
+        # verify=False persist beyond the end of this context manager.
+        opened_adapters.add(self.get_adapter(url))
+
+        settings = old_merge_environment_settings(self, url, proxies, stream, verify, cert)
+        settings['verify'] = False
+
+        return settings
+
+    requests.Session.merge_environment_settings = merge_environment_settings
+
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', InsecureRequestWarning)
+            yield
+    finally:
+        requests.Session.merge_environment_settings = old_merge_environment_settings
+
+        for adapter in opened_adapters:
+            try:
+                adapter.close()
+            except:
+                pass
 
 class LiveFaceRecognition(Resource):
 
     def buildDataFace(self):
-        r = requests.get(urlResource, verify=False)
-        output = r.json()
+        with no_ssl_verification():
+            r = requests.get(urlResource, verify=False)
+            output = r.json()
         retVal = {};
         if output['status'] == 'successful':
             for item in output['items']:
