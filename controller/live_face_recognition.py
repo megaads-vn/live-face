@@ -23,7 +23,6 @@ class LiveFaceRecognition(Resource):
     def buildDataFace(self):
         r = requests.get(urlResource, verify=False)
         output = r.json()
-        print("\n Output=" + output)
         retVal = {};
         if output['status'] == 'successful':
             for item in output['items']:
