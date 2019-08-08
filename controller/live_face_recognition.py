@@ -64,7 +64,6 @@ class LiveFaceRecognition(Resource):
             if output['status'] == 'successful':
                 for item in output['items']:
                     retVal[item['id']] = item['name']
-        print(retVal)
         return retVal
 
     def post(self):
@@ -99,7 +98,8 @@ class LiveFaceRecognition(Resource):
                 id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
                 if (confidence < 100):
                     name = ''
-                    print('id' + id)
+                    print(id)
+                    print(users)
                     if id in users:
                         name = users[id]
                         print(name)
