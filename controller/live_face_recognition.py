@@ -109,8 +109,7 @@ class LiveFaceRecognition(Resource):
                             # post a timeKeeping
                             try:
                                 with no_ssl_verification():
-                                    r = requests.post(apiTimeKeeping, data={"staff_id": id})
-                                    print(type(r.status_code))
+                                    r = requests.post(apiTimeKeeping, data={"staff_id": id}, verify=False)
                                     if r.status_code == 200:
                                         timeKeeping[id] = []
                             except:
