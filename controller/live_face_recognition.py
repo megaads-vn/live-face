@@ -96,8 +96,7 @@ class LiveFaceRecognition(Resource):
             for(x,y,w,h) in faces:
                 cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
                 id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
-                print(confidence)
-                if (confidence < 1):
+                if (confidence < 100):
                     name = ''
                     print(id)
                     if id in users:
