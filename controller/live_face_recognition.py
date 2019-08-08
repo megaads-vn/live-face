@@ -59,11 +59,12 @@ class LiveFaceRecognition(Resource):
         with no_ssl_verification():
             r = requests.get(urlResource, verify=False)
             output = r.json()
-        retVal = {};
-        if output['status'] == 'successful':
-            for item in output['items']:
-                retVal[item['id']] = item['name']
 
+            retVal = {};
+            if output['status'] == 'successful':
+                for item in output['items']:
+                    retVal[item['id']] = item['name']
+        print(retVal)
         return retVal
 
     def post(self):
@@ -98,9 +99,12 @@ class LiveFaceRecognition(Resource):
                 id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
                 if (confidence < 100):
                     name = ''
+                    print('id' + id)
                     if id in users:
                         name = users[id]
+                        print(name)
                         target = round(100 - confidence)
+                        print(target)
                         # if target >= 50:
                         #     timeKeeping[id].append(target)
                         #
@@ -118,7 +122,7 @@ class LiveFaceRecognition(Resource):
                     name = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
 
-                if target >= 50:
+                if target >= 3:
                     cv2.putText(img, str(name), (x+5,y-5), font, 1, (255,255,255), 2)
                     cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)
 
