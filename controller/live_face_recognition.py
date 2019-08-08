@@ -63,7 +63,8 @@ class LiveFaceRecognition(Resource):
             retVal = {};
             if output['status'] == 'successful':
                 for item in output['items']:
-                    retVal[item['id']] = item['name']
+                    id = int(item['id'])
+                    retVal[id] = item['name']
         return retVal
 
     def post(self):
@@ -98,13 +99,9 @@ class LiveFaceRecognition(Resource):
                 id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
                 if (confidence < 100):
                     name = ''
-                    print(id)
-                    print(users[id])
                     if id in users:
                         name = users[id]
-                        print(name)
                         target = round(100 - confidence)
-                        print(target)
                         # if target >= 50:
                         #     timeKeeping[id].append(target)
                         #
@@ -122,7 +119,7 @@ class LiveFaceRecognition(Resource):
                     name = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
 
-                if target >= 3:
+                if target >= 30:
                     cv2.putText(img, str(name), (x+5,y-5), font, 1, (255,255,255), 2)
                     cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)
 
