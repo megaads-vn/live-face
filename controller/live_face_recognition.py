@@ -99,6 +99,7 @@ class LiveFaceRecognition(Resource):
                 if (confidence < 100):
                     name = ''
                     print(id)
+                    print(users[id])
                     if id in users:
                         name = users[id]
                         print(name)
