@@ -102,15 +102,17 @@ class LiveFaceRecognition(Resource):
                     if id in users:
                         name = users[id]
                         target = round(100 - confidence)
-                        if target >= 50:
+                        if target >= 30:
                             timeKeeping[id].append(target)
                         
-                        if len(timeKeeping[id]) >= 50:
+                        if len(timeKeeping[id]) >= 20:
                             # post a timeKeeping
                             try:
-                                r = requests.post(apiTimeKeeping, data={"staff_id": id})
-                                if r.status_code == 200:
-                                    timeKeeping[id] = []
+                                with no_ssl_verification():
+                                    r = requests.post(apiTimeKeeping, data={"staff_id": id})
+                                    print(type(r.status_code)
+                                    if r.status_code == 200:
+                                        timeKeeping[id] = []
                             except:
                                 print("An exception occurred")
 
@@ -119,7 +121,7 @@ class LiveFaceRecognition(Resource):
                     name = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
 
-                if target >= 10:
+                if target >= 30:
                     cv2.putText(img, str(name), (x+5,y-5), font, 1, (255,255,255), 2)
                     cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)
 
