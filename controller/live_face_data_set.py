@@ -53,7 +53,7 @@ class LiveFaceDataSet(Resource):
 
             cv2.imshow('image', img)
             cv2.waitKey(50)
-            if count >= 30: # Take 30 face sample and stop video
+            if count >= 100: # Take 30 face sample and stop video
                 break
             elif os.path.exists('camera.lock'):
                 os.remove('camera.lock')
